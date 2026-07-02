@@ -1,0 +1,414 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#12161d;
+    --surface:#1b212b;
+    --surface-alt:#222a36;
+    --hairline:#2b3340;
+    --text:#eef0f3;
+    --muted:#8a93a6;
+    --amber:#e7a63c;
+    --amber-dim:#7a5f2e;
+    --rust:#c1543a;
+    --teal:#4fa697;
+    --good:#5fb87a;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;line-height:1.5;}
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px;}
+
+  /* ---------- HERO / DEPARTURE BOARD ---------- */
+  .hero{
+    background:var(--surface);
+    border:1px solid var(--hairline);
+    border-radius:10px;
+    padding:26px 24px 22px;
+    margin-bottom:28px;
+  }
+  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
+  .hero-title{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.14em;color:var(--amber);text-transform:uppercase;}
+  .hero-sub{color:var(--muted);font-size:13px;margin-top:4px;}
+  .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
+  .flip{
+    background:var(--surface-alt);
+    border:1px solid var(--hairline);
+    border-radius:8px;
+    padding:14px 16px;
+  }
+  .flip-label{font-size:10.5px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-family:'Space Mono',monospace;}
+  .flip-value{
+    font-family:'Space Mono',monospace;
+    font-size:30px;font-weight:700;color:var(--amber);
+    margin-top:6px;
+    animation:flicker .6s ease-out;
+  }
+  .flip-value small{font-size:13px;color:var(--text);font-weight:400;margin-left:6px;}
+  @keyframes flicker{
+    0%{opacity:0;transform:translateY(-4px);}
+    100%{opacity:1;transform:translateY(0);}
+  }
+  @media (prefers-reduced-motion:reduce){.flip-value{animation:none;}}
+
+  /* ---------- SECTION HEADERS ---------- */
+  h2.section-title{
+    font-family:'Space Mono',monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);
+    margin:38px 0 14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2.section-title::after{content:"";flex:1;height:1px;background:var(--hairline);}
+  .section-note{color:var(--muted);font-size:12.5px;margin:-8px 0 16px;}
+
+  /* ---------- ROADMAP ---------- */
+  .phase{
+    background:var(--surface);
+    border:1px solid var(--hairline);
+    border-left:3px solid var(--amber);
+    border-radius:8px;
+    padding:16px 18px;
+    margin-bottom:12px;
+  }
+  .phase-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;}
+  .phase-name{font-weight:700;font-size:15px;}
+  .phase-range{font-family:'Space Mono',monospace;font-size:11.5px;color:var(--amber);}
+  .phase-desc{color:var(--muted);font-size:13.5px;margin-top:6px;}
+
+  /* ---------- CALENDAR / KEY DATES ---------- */
+  .datetable{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .datetable tr{border-bottom:1px solid var(--hairline);}
+  .datetable td{padding:11px 8px;vertical-align:top;}
+  .dt-date{font-family:'Space Mono',monospace;color:var(--amber);white-space:nowrap;width:120px;}
+  .tag{
+    display:inline-block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;
+    padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle;text-transform:uppercase;
+  }
+  .tag-de{background:rgba(193,84,58,.18);color:var(--rust);}
+  .tag-kr{background:rgba(79,166,151,.18);color:var(--teal);}
+  .tag-all{background:rgba(231,166,60,.18);color:var(--amber);}
+
+  /* ---------- TODAY / WEEKLY ---------- */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:640px){.two-col{grid-template-columns:1fr;}}
+  .checklist-box{background:var(--surface);border:1px solid var(--hairline);border-radius:8px;padding:16px 18px;}
+  .checklist-box h3{margin:0 0 4px;font-size:13.5px;font-family:'Space Mono',monospace;letter-spacing:.06em;color:var(--text);}
+  .checklist-box .sub{color:var(--muted);font-size:11.5px;margin-bottom:12px;}
+  .item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--hairline);font-size:13.5px;}
+  .item:last-child{border-bottom:none;}
+  .item input[type=checkbox]{
+    appearance:none;width:17px;height:17px;min-width:17px;border-radius:4px;border:1.5px solid var(--muted);
+    cursor:pointer;position:relative;background:transparent;
+  }
+  .item input[type=checkbox]:checked{background:var(--good);border-color:var(--good);}
+  .item input[type=checkbox]:checked::after{
+    content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;
+    border:solid var(--bg);border-width:0 2px 2px 0;transform:rotate(45deg);
+  }
+  .item label{cursor:pointer;flex:1;}
+  .item.done label{color:var(--muted);text-decoration:line-through;}
+
+  /* ---------- MILESTONES ---------- */
+  .m-group{margin-bottom:22px;}
+  .m-group-title{font-weight:700;font-size:13.5px;margin-bottom:8px;color:var(--amber);font-family:'Space Mono',monospace;letter-spacing:.03em;}
+  .progress-wrap{display:flex;align-items:center;gap:12px;margin:10px 0 26px;}
+  .progress-bar{flex:1;height:8px;background:var(--surface-alt);border-radius:4px;overflow:hidden;border:1px solid var(--hairline);}
+  .progress-fill{height:100%;background:var(--amber);width:0%;transition:width .4s ease;}
+  .progress-text{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap;}
+
+  .footnote{color:var(--muted);font-size:12px;margin-top:40px;border-top:1px solid var(--hairline);padding-top:16px;}
+</style>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="hero-title">Study Abroad — Mission Control</div>
+        <div class="hero-sub">HCI / UI-UX Masters · Germany (DAAD) + South Korea (GKS) · CSE background</div>
+      </div>
+    </div>
+    <div class="board" id="board"></div>
+  </div>
+
+  <h2 class="section-title">Roadmap</h2>
+  <div class="section-note">Four phases from today through departure. This is the shape of the plan — the calendar below has the specific dates.</div>
+  <div id="roadmap"></div>
+
+  <h2 class="section-title">Key Dates</h2>
+  <div class="section-note">Dates marked "tentative" shift year to year — confirm on the official portal 1–2 months before.</div>
+  <table class="datetable"><tbody id="dates"></tbody></table>
+
+  <h2 class="section-title">Check In — Today &amp; This Week</h2>
+  <div class="section-note">Daily items reset every day automatically. Weekly items reset every Monday.</div>
+  <div class="two-col">
+    <div class="checklist-box">
+      <h3>DAILY</h3>
+      <div class="sub" id="daily-date"></div>
+      <div id="daily-list"></div>
+    </div>
+    <div class="checklist-box">
+      <h3>THIS WEEK</h3>
+      <div class="sub" id="weekly-range"></div>
+      <div id="weekly-list"></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Milestones</h2>
+  <div class="section-note">One-time to-dos. These stay checked once done — track the big picture here.</div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-text" id="progress-text">0 / 0</div>
+  </div>
+  <div id="milestones"></div>
+
+  <div class="footnote">Built from your study-abroad planning conversation · Graduation target: July–August 2027 · Tracks: DAAD STEM Scholarship (Germany) &amp; GKS/KGSP (South Korea)</div>
+</div>
+
+<script>
+(function(){
+  const GRAD_DATE = new Date('2027-08-01T00:00:00');
+
+  const keyDates = [
+    {date:'2026-08-15', label:'Take IELTS/TOEFL (target 7.0+ / 100+)', tag:'all'},
+    {date:'2026-08-31', label:'Finalize uni shortlist: Saarland, Duisburg-Essen (DE) + KAIST, Yonsei, SKKU (KR)', tag:'all'},
+    {date:'2026-09-15', label:'Portfolio case study #1 complete', tag:'all'},
+    {date:'2026-09-20', label:'GKS Embassy Track application window opens (tentative)', tag:'kr'},
+    {date:'2026-10-15', label:'DAAD STEM Scholarship application opens (tentative)', tag:'de'},
+    {date:'2026-11-30', label:'Portfolio case study #2 complete', tag:'all'},
+    {date:'2027-01-15', label:'GKS embassy interview window, if shortlisted (tentative)', tag:'kr'},
+    {date:'2027-02-15', label:'Portfolio case study #3 complete', tag:'all'},
+    {date:'2027-03-15', label:'GKS first-round results (tentative)', tag:'kr'},
+    {date:'2027-05-15', label:'Saarland University application deadline (tentative)', tag:'de'},
+    {date:'2027-06-01', label:'GKS final NIIED results (tentative)', tag:'kr'},
+    {date:'2027-07-15', label:'Duisburg-Essen application deadline (tentative)', tag:'de'},
+    {date:'2027-08-01', label:'Graduation (CSE)', tag:'all'},
+    {date:'2027-09-01', label:'Korea: Korean language program begins, if selected', tag:'kr'},
+    {date:'2027-10-01', label:'Germany: Winter term 27/28 begins, if selected', tag:'de'},
+  ];
+
+  const roadmap = [
+    {name:'Phase 1 — Foundation', range:'Now → Sep 2026', desc:'IELTS/TOEFL prep + test, shortlist universities, start portfolio case study #1, begin SOP drafts, line up recommenders.'},
+    {name:'Phase 2 — Applications Wave 1', range:'Sep 2026 → Dec 2026', desc:'Submit GKS Embassy Track application. Submit DAAD STEM Scholarship application. Finish portfolio case study #2. Finalize recommendation letters.'},
+    {name:'Phase 3 — Interviews &amp; Admissions', range:'Jan 2027 → Jun 2027', desc:'GKS interview prep (if shortlisted). Finish portfolio case study #3. Apply to Saarland / Duisburg-Essen. Keep CGPA at 8.0+. Track GKS + DAAD results.'},
+    {name:'Phase 4 — Graduation &amp; Transition', range:'Jul 2027 →', desc:'Graduate. Confirm which offer to take. Prepare visa documents, blocked account / financials, and travel logistics.'},
+  ];
+
+  const dailyHabits = [
+    {id:'d1', label:'English practice — 30–45 min (until IELTS is done)'},
+    {id:'d2', label:'Portfolio / design work — 1 hr'},
+    {id:'d3', label:'SOP / Study Plan writing — 20–30 min (seasonal, during application windows)'},
+    {id:'d4', label:'Coursework — protect CGPA, don\'t let it slide'},
+  ];
+
+  const weeklyTasks = [
+    {id:'w1', label:'Review progress against the roadmap below'},
+    {id:'w2', label:'Check GKS (studyinkorea.go.kr) + DAAD portals for updates'},
+    {id:'w3', label:'One full IELTS mock section (rotate: writing/speaking/reading/listening)'},
+    {id:'w4', label:'Follow up on recommendation letters / portfolio feedback, if relevant this week'},
+  ];
+
+  const milestoneGroups = [
+    {title:'Phase 1 — Foundation', items:[
+      {id:'m1', label:'Book and take IELTS/TOEFL'},
+      {id:'m2', label:'Shortlist + research Saarland and Duisburg-Essen program pages'},
+      {id:'m3', label:'Shortlist + research KAIST, Yonsei, SKKU HCI-adjacent departments'},
+      {id:'m4', label:'Pick 3 portfolio project ideas (at least one with working code/prototype)'},
+      {id:'m5', label:'Identify 2 professors for recommendation letters and ask early'},
+    ]},
+    {title:'Phase 2 — Applications Wave 1', items:[
+      {id:'m6', label:'Complete portfolio case study #1'},
+      {id:'m7', label:'Draft GKS Study Plan (Korea-specific narrative, 2000–3000 words)'},
+      {id:'m8', label:'Draft DAAD motivation letter (STEM-development narrative)'},
+      {id:'m9', label:'Collect + notarize/translate transcripts and certificates'},
+      {id:'m10', label:'Submit GKS Embassy Track application'},
+      {id:'m11', label:'Submit DAAD STEM Scholarship application'},
+      {id:'m12', label:'Complete portfolio case study #2'},
+    ]},
+    {title:'Phase 3 — Interviews & Admissions', items:[
+      {id:'m13', label:'Prep + attend GKS interview, if shortlisted'},
+      {id:'m14', label:'Complete portfolio case study #3'},
+      {id:'m15', label:'Submit Saarland University application'},
+      {id:'m16', label:'Submit Duisburg-Essen application'},
+      {id:'m17', label:'Receive + review GKS first-round result'},
+      {id:'m18', label:'Receive + review DAAD decision'},
+    ]},
+    {title:'Phase 4 — Graduation & Transition', items:[
+      {id:'m19', label:'Graduate — final degree certificate in hand'},
+      {id:'m20', label:'Confirm final choice between offers'},
+      {id:'m21', label:'Sort visa paperwork (blocked account / embassy documents)'},
+      {id:'m22', label:'Book travel + departure logistics'},
+    ]},
+  ];
+
+  // ---------- helpers ----------
+  function pad(n){return String(n).padStart(2,'0');}
+  function todayKey(){
+    const d = new Date();
+    return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  }
+  function isoWeekKey(){
+    const d = new Date();
+    const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    const day = (t.getUTCDay()+6)%7;
+    t.setUTCDate(t.getUTCDate()-day+3);
+    const firstThu = new Date(Date.UTC(t.getUTCFullYear(),0,4));
+    const week = 1+Math.round(((t-firstThu)/86400000-3+((firstThu.getUTCDay()+6)%7))/7);
+    return t.getUTCFullYear()+'-W'+pad(week);
+  }
+  function weekRangeLabel(){
+    const d = new Date();
+    const day = (d.getDay()+6)%7;
+    const mon = new Date(d); mon.setDate(d.getDate()-day);
+    const sun = new Date(mon); sun.setDate(mon.getDate()+6);
+    const fmt = x => x.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return fmt(mon)+' – '+fmt(sun);
+  }
+  function daysBetween(a,b){return Math.ceil((a-b)/86400000);}
+  function fmtDate(s){
+    const d = new Date(s+'T00:00:00');
+    return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  }
+
+  // ---------- render static content ----------
+  function renderBoard(){
+    const now = new Date();
+    const daysToGrad = daysBetween(GRAD_DATE, now);
+    const upcoming = keyDates.filter(k => new Date(k.date+'T00:00:00') >= now).sort((a,b)=> new Date(a.date)-new Date(b.date))[0];
+    const daysToNext = upcoming ? daysBetween(new Date(upcoming.date+'T00:00:00'), now) : null;
+
+    const board = document.getElementById('board');
+    board.innerHTML = `
+      <div class="flip">
+        <div class="flip-label">Days to graduation</div>
+        <div class="flip-value">${daysToGrad}<small>days</small></div>
+      </div>
+      <div class="flip">
+        <div class="flip-label">Next deadline</div>
+        <div class="flip-value">${daysToNext !== null ? daysToNext : '—'}<small>days</small></div>
+      </div>
+      <div class="flip">
+        <div class="flip-label">${upcoming ? upcoming.label.slice(0,34)+(upcoming.label.length>34?'…':'') : 'All caught up'}</div>
+        <div class="flip-value" style="font-size:16px;color:var(--text);margin-top:10px;">${upcoming ? fmtDate(upcoming.date) : ''}</div>
+      </div>
+    `;
+  }
+
+  function renderRoadmap(){
+    document.getElementById('roadmap').innerHTML = roadmap.map(p => `
+      <div class="phase">
+        <div class="phase-head">
+          <div class="phase-name">${p.name}</div>
+          <div class="phase-range">${p.range}</div>
+        </div>
+        <div class="phase-desc">${p.desc}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderDates(){
+    const tagClass = {de:'tag-de', kr:'tag-kr', all:'tag-all'};
+    const tagText = {de:'Germany', kr:'Korea', all:'Both'};
+    document.getElementById('dates').innerHTML = keyDates.map(k => `
+      <tr>
+        <td class="dt-date">${fmtDate(k.date)}</td>
+        <td>${k.label}<span class="tag ${tagClass[k.tag]}">${tagText[k.tag]}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  // ---------- persisted checklists ----------
+  function loadJSON(key){
+    try{
+      const val = localStorage.getItem(key);
+      return val ? JSON.parse(val) : {};
+    }catch(e){ return {}; }
+  }
+  function saveJSON(key, obj){
+    try{ localStorage.setItem(key, JSON.stringify(obj)); }
+    catch(e){ console.error('storage save failed', e); }
+  }
+
+  function renderDaily(){
+    const key = 'daily:'+todayKey();
+    document.getElementById('daily-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long', month:'short', day:'numeric'});
+    const state = loadJSON(key);
+    const list = document.getElementById('daily-list');
+    list.innerHTML = dailyHabits.map(h => `
+      <div class="item ${state[h.id]?'done':''}">
+        <input type="checkbox" id="${h.id}" ${state[h.id]?'checked':''}>
+        <label for="${h.id}">${h.label}</label>
+      </div>
+    `).join('');
+    dailyHabits.forEach(h=>{
+      document.getElementById(h.id).addEventListener('change', (e)=>{
+        state[h.id] = e.target.checked;
+        e.target.closest('.item').classList.toggle('done', e.target.checked);
+        saveJSON(key, state);
+      });
+    });
+  }
+
+  function renderWeekly(){
+    const key = 'weekly:'+isoWeekKey();
+    document.getElementById('weekly-range').textContent = weekRangeLabel();
+    const state = loadJSON(key);
+    const list = document.getElementById('weekly-list');
+    list.innerHTML = weeklyTasks.map(t => `
+      <div class="item ${state[t.id]?'done':''}">
+        <input type="checkbox" id="${t.id}" ${state[t.id]?'checked':''}>
+        <label for="${t.id}">${t.label}</label>
+      </div>
+    `).join('');
+    weeklyTasks.forEach(t=>{
+      document.getElementById(t.id).addEventListener('change', (e)=>{
+        state[t.id] = e.target.checked;
+        e.target.closest('.item').classList.toggle('done', e.target.checked);
+        saveJSON(key, state);
+      });
+    });
+  }
+
+  function renderMilestones(){
+    const state = loadJSON('milestones');
+    const wrap = document.getElementById('milestones');
+    wrap.innerHTML = milestoneGroups.map(g => `
+      <div class="m-group">
+        <div class="m-group-title">${g.title}</div>
+        ${g.items.map(it => `
+          <div class="item ${state[it.id]?'done':''}">
+            <input type="checkbox" id="${it.id}" ${state[it.id]?'checked':''}>
+            <label for="${it.id}">${it.label}</label>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+    const allItems = milestoneGroups.flatMap(g=>g.items);
+    function updateProgress(){
+      const done = allItems.filter(it => state[it.id]).length;
+      const pct = Math.round((done/allItems.length)*100);
+      document.getElementById('progress-fill').style.width = pct+'%';
+      document.getElementById('progress-text').textContent = done+' / '+allItems.length;
+    }
+    updateProgress();
+
+    allItems.forEach(it=>{
+      document.getElementById(it.id).addEventListener('change', (e)=>{
+        state[it.id] = e.target.checked;
+        e.target.closest('.item').classList.toggle('done', e.target.checked);
+        updateProgress();
+        saveJSON('milestones', state);
+      });
+    });
+  }
+
+  renderBoard();
+  renderRoadmap();
+  renderDates();
+  renderDaily();
+  renderWeekly();
+  renderMilestones();
+})();
+</script>
