@@ -1,421 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Masters Abroad — Mission Control</title>
 <link rel="icon" type="image/x-icon" href="favicon_io/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon_io/android-chrome-192x192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="favicon_io/android-chrome-512x512.png">
-<link rel="manifest" href="favicon_io/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+<link rel="manifest" href="favicon_io/site.webmanifest"><link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#12161d;
-    --surface:#1b212b;
-    --surface-alt:#222a36;
-    --hairline:#2b3340;
-    --text:#eef0f3;
-    --muted:#8a93a6;
-    --amber:#e7a63c;
-    --amber-dim:#7a5f2e;
-    --rust:#c1543a;
-    --teal:#4fa697;
-    --good:#5fb87a;
-  }
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;line-height:1.5;}
-  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px;}
+:root{
+  --bg:#0A0E17;
+  --panel:#121826;
+  --panel-2:#161D2E;
+  --border:#242D42;
+  --accent:#EFA23E;
+  --accent-soft:rgba(239,162,62,0.10);
+  --accent-soft-2:rgba(239,162,62,0.18);
+  --text:#E9ECF3;
+  --text-dim:#8A93AC;
+  --text-dimmer:#5C6580;
+  --good:#4FB58C;
+  --good-soft:rgba(79,181,140,0.12);
+  --bad:#E0684F;
+  --bad-soft:rgba(224,104,79,0.12);
+  --radius:14px;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:960px;margin:0 auto;padding:32px 20px 90px;}
+.mono{font-family:'JetBrains Mono',monospace;}
+a{color:inherit;}
+h2{margin:0;font-weight:700;}
+p{margin:0;}
 
-  /* ---------- HERO / DEPARTURE BOARD ---------- */
-  .hero{
-    background:var(--surface);
-    border:1px solid var(--hairline);
-    border-radius:10px;
-    padding:26px 24px 22px;
-    margin-bottom:28px;
-  }
-  .hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px;}
-  .hero-title{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:.14em;color:var(--amber);text-transform:uppercase;}
-  .hero-sub{color:var(--muted);font-size:13px;margin-top:4px;}
-  .board{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}
-  .flip{
-    background:var(--surface-alt);
-    border:1px solid var(--hairline);
-    border-radius:8px;
-    padding:14px 16px;
-  }
-  .flip-label{font-size:10.5px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-family:'Space Mono',monospace;}
-  .flip-value{
-    font-family:'Space Mono',monospace;
-    font-size:30px;font-weight:700;color:var(--amber);
-    margin-top:6px;
-    animation:flicker .6s ease-out;
-  }
-  .flip-value small{font-size:13px;color:var(--text);font-weight:400;margin-left:6px;}
-  @keyframes flicker{
-    0%{opacity:0;transform:translateY(-4px);}
-    100%{opacity:1;transform:translateY(0);}
-  }
-  @media (prefers-reduced-motion:reduce){.flip-value{animation:none;}}
+/* HEADER */
+.hero{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:26px 26px 22px;margin-bottom:26px;}
+.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.12em;color:var(--accent);font-weight:700;text-transform:uppercase;}
+.hero-sub{color:var(--text-dim);font-size:13.5px;margin-top:6px;}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:20px;}
+.stat-box{background:var(--panel-2);border:1px solid var(--border);border-radius:11px;padding:14px 16px;}
+.stat-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dimmer);margin-bottom:8px;}
+.stat-value{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;color:var(--accent);}
+.stat-value span{font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:var(--text-dim);margin-left:4px;}
+.stat-sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-dim);margin-top:3px;}
 
-  /* ---------- SECTION HEADERS ---------- */
-  h2.section-title{
-    font-family:'Space Mono',monospace;
-    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--muted);
-    margin:38px 0 14px;
-    display:flex;align-items:center;gap:10px;
-  }
-  h2.section-title::after{content:"";flex:1;height:1px;background:var(--hairline);}
-  .section-note{color:var(--muted);font-size:12.5px;margin:-8px 0 16px;}
+/* PROGRESS */
+.progress-bar{background:var(--panel);border:1px solid var(--border);border-radius:999px;height:9px;overflow:hidden;margin-bottom:6px;}
+.progress-fill{height:100%;background:var(--accent);width:0%;transition:width .4s ease;}
+.progress-label{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--text-dim);margin-bottom:28px;}
 
-  /* ---------- ROADMAP ---------- */
-  .phase{
-    background:var(--surface);
-    border:1px solid var(--hairline);
-    border-left:3px solid var(--amber);
-    border-radius:8px;
-    padding:16px 18px;
-    margin-bottom:12px;
-  }
-  .phase-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;}
-  .phase-name{font-weight:700;font-size:15px;}
-  .phase-range{font-family:'Space Mono',monospace;font-size:11.5px;color:var(--amber);}
-  .phase-desc{color:var(--muted);font-size:13.5px;margin-top:6px;}
+/* SECTION HEAD */
+.section-eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:36px 0 4px;}
+.section-title{font-size:19px;font-weight:700;margin-bottom:6px;}
+.section-desc{color:var(--text-dim);font-size:13.5px;margin-bottom:16px;max-width:640px;}
 
-  /* ---------- CALENDAR / KEY DATES ---------- */
-  .datetable{width:100%;border-collapse:collapse;font-size:13.5px;}
-  .datetable tr{border-bottom:1px solid var(--hairline);}
-  .datetable td{padding:11px 8px;vertical-align:top;}
-  .dt-date{font-family:'Space Mono',monospace;color:var(--amber);white-space:nowrap;width:120px;}
-  .tag{
-    display:inline-block;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.05em;
-    padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle;text-transform:uppercase;
-  }
-  .tag-de{background:rgba(193,84,58,.18);color:var(--rust);}
-  .tag-kr{background:rgba(79,166,151,.18);color:var(--teal);}
-  .tag-all{background:rgba(231,166,60,.18);color:var(--amber);}
+/* PHASE CARDS (roadmap) */
+.phase{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:11px;padding:16px 18px;margin-bottom:12px;}
+.phase-top{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+.phase-top h3{font-size:15.5px;font-weight:700;margin:0;}
+.phase-range{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--accent);white-space:nowrap;padding-top:2px;}
+.phase p{color:var(--text-dim);font-size:13px;margin-top:8px;}
 
-  /* ---------- TODAY / WEEKLY ---------- */
-  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  @media (max-width:640px){.two-col{grid-template-columns:1fr;}}
-  .checklist-box{background:var(--surface);border:1px solid var(--hairline);border-radius:8px;padding:16px 18px;}
-  .checklist-box h3{margin:0 0 4px;font-size:13.5px;font-family:'Space Mono',monospace;letter-spacing:.06em;color:var(--text);}
-  .checklist-box .sub{color:var(--muted);font-size:11.5px;margin-bottom:12px;}
-  .item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--hairline);font-size:13.5px;}
-  .item:last-child{border-bottom:none;}
-  .item input[type=checkbox]{
-    appearance:none;width:17px;height:17px;min-width:17px;border-radius:4px;border:1.5px solid var(--muted);
-    cursor:pointer;position:relative;background:transparent;
-  }
-  .item input[type=checkbox]:checked{background:var(--good);border-color:var(--good);}
-  .item input[type=checkbox]:checked::after{
-    content:"";position:absolute;left:5px;top:1px;width:4px;height:9px;
-    border:solid var(--bg);border-width:0 2px 2px 0;transform:rotate(45deg);
-  }
-  .item label{cursor:pointer;flex:1;}
-  .item.done label{color:var(--muted);text-decoration:line-through;}
+/* PATH ACCORDIONS */
+.path{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--radius);overflow:hidden;margin-bottom:14px;}
+.path summary{list-style:none;cursor:pointer;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.path summary::-webkit-details-marker{display:none;}
+.path-title{display:flex;align-items:center;gap:12px;}
+.path-badge{font-family:'JetBrains Mono',monospace;font-size:10.5px;padding:3px 9px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-weight:700;white-space:nowrap;letter-spacing:.03em;}
+.path-title h3{font-size:16.5px;font-weight:700;margin:0;}
+.path-title .p-sub{font-size:12.5px;color:var(--text-dim);margin-top:3px;font-weight:400;}
+.chevron{transition:transform .25s ease;color:var(--text-dim);flex-shrink:0;}
+.path[open] .chevron{transform:rotate(180deg);}
+.path-body{padding:2px 20px 22px;border-top:1px solid var(--border);}
+.path-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:16px 0;}
+.fact{background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:12.5px;}
+.fact .k{color:var(--text-dimmer);display:block;font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+.fact .v{font-weight:600;}
+.path-note{background:var(--accent-soft);border-radius:10px;padding:12px 14px;font-size:13px;margin:14px 0;color:var(--text);border-left:3px solid var(--accent);}
+.checklist{list-style:none;margin:12px 0 6px;padding:0;display:flex;flex-direction:column;gap:6px;}
+.checklist li{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;padding:7px 9px;border-radius:8px;transition:background .15s;}
+.checklist li:hover{background:var(--panel-2);}
+.checklist input{margin-top:3px;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;cursor:pointer;}
+.checklist label{cursor:pointer;}
+.checklist li.done label{color:var(--text-dimmer);text-decoration:line-through;}
+.linkset{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.linkset a{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--border);
+  color:var(--text-dim);text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:5px;
+}
+.linkset a:hover{border-color:var(--accent);color:var(--accent);}
+.section-label{font-family:'JetBrains Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--text-dimmer);margin:18px 0 8px;font-weight:700;}
+.study-list{margin:0 0 6px;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:6px;}
+.study-list li{font-size:13px;color:var(--text-dim);padding-left:16px;position:relative;}
+.study-list li::before{content:'▸';position:absolute;left:0;color:var(--accent);}
+.study-list b{color:var(--text);font-weight:600;}
 
-  /* ---------- MILESTONES ---------- */
-  .m-group{margin-bottom:22px;}
-  .m-group-title{font-weight:700;font-size:13.5px;margin-bottom:8px;color:var(--amber);font-family:'Space Mono',monospace;letter-spacing:.03em;}
-  .progress-wrap{display:flex;align-items:center;gap:12px;margin:10px 0 26px;}
-  .progress-bar{flex:1;height:8px;background:var(--surface-alt);border-radius:4px;overflow:hidden;border:1px solid var(--hairline);}
-  .progress-fill{height:100%;background:var(--amber);width:0%;transition:width .4s ease;}
-  .progress-text{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap;}
+/* BUDGET */
+.budget-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:16px;}
+.budget-card h3{font-size:15px;margin-bottom:12px;font-weight:700;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:6px;}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);}
+th{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-dimmer);font-weight:600;}
+td{color:var(--text-dim);}
+tr:last-child td{border-bottom:none;font-weight:700;background:var(--accent-soft);color:var(--text);}
+.table-scroll{overflow-x:auto;}
+.callout{background:var(--panel-2);border-left:3px solid var(--accent);border-radius:10px;padding:13px 15px;font-size:13px;margin-top:10px;color:var(--text-dim);}
+.callout b{color:var(--text);}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px;}
+.verdict{border-radius:10px;padding:14px;font-size:12.8px;border:1px solid var(--border);}
+.verdict.good{background:var(--good-soft);border-left:3px solid var(--good);}
+.verdict.ok{background:var(--accent-soft);border-left:3px solid var(--accent);}
+.verdict.bad{background:var(--bad-soft);border-left:3px solid var(--bad);}
+.verdict b{display:block;margin-bottom:4px;font-size:13.5px;color:var(--text);}
+.verdict span{color:var(--text-dim);}
 
-  .footnote{color:var(--muted);font-size:12px;margin-top:40px;border-top:1px solid var(--hairline);padding-top:16px;}
+.werk-box{margin-top:18px;padding-top:18px;border-top:1px dashed var(--border);}
+.werk-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0;}
+@media(max-width:640px){.werk-grid{grid-template-columns:1fr;}}
+.werk-stat{background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.werk-stat .num{font-family:'JetBrains Mono',monospace;font-size:22px;color:var(--accent);font-weight:700;}
+.werk-stat .lbl{font-size:11.5px;color:var(--text-dim);margin-top:2px;}
+ul.plain{margin:8px 0;padding-left:18px;font-size:13px;color:var(--text-dim);}
+ul.plain li{margin-bottom:4px;}
+ul.plain b{color:var(--text);}
+
+.dw-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:640px){.dw-grid{grid-template-columns:1fr;}}
+.dw-card{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--radius);padding:20px;}
+.dw-card h3{font-size:14px;margin-bottom:4px;font-weight:700;}
+.dw-card .sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dimmer);margin-bottom:12px;}
+
+.reset-row{display:flex;justify-content:flex-end;margin-top:32px;}
+.reset-btn{background:var(--panel);border:1px solid var(--border);color:var(--text-dim);font-size:11.5px;padding:7px 16px;border-radius:999px;cursor:pointer;font-family:'JetBrains Mono',monospace;}
+.reset-btn:hover{border-color:var(--bad);color:var(--bad);}
+footer{text-align:center;color:var(--text-dimmer);font-size:11px;margin-top:40px;font-family:'JetBrains Mono',monospace;}
 </style>
-
+</head>
+<body>
 <div class="wrap">
 
+  <!-- HERO -->
   <div class="hero">
-    <div class="hero-top">
-      <div>
-        <div class="hero-title">Study Abroad — Mission Control</div>
-        <div class="hero-sub">HCI / UI-UX Masters · Germany (DAAD) + South Korea (GKS) · CSE background</div>
+    <div class="hero-eyebrow">Study Abroad — Mission Control</div>
+    <div class="hero-sub">HCI / UI-UX Masters · Germany (direct) + South Korea (GKS) + backups · CSE background</div>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-label">Days to graduation</div>
+        <div class="stat-value" id="gradDays">—<span>days</span></div>
+        <div class="stat-sub">Aug 2027</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Next deadline</div>
+        <div class="stat-value" id="nextDeadlineDays">—<span>days</span></div>
+        <div class="stat-sub" id="nextDeadlineLabel">—</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Take IELTS/TOEFL (target 7.0+/100+)</div>
+        <div class="stat-value" id="ieltsDays">—<span>days</span></div>
+        <div class="stat-sub" id="ieltsDate">—</div>
       </div>
     </div>
-    <div class="board" id="board"></div>
   </div>
 
-  <h2 class="section-title">Roadmap</h2>
-  <div class="section-note">Four phases from today through departure. This is the shape of the plan — the calendar below has the specific dates.</div>
-  <div id="roadmap"></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 0 tasks complete across all tracks</div>
 
-  <h2 class="section-title">Key Dates</h2>
-  <div class="section-note">Dates marked "tentative" shift year to year — confirm on the official portal 1–2 months before.</div>
-  <table class="datetable"><tbody id="dates"></tbody></table>
+  <!-- ROADMAP -->
+  <div class="section-eyebrow">Roadmap</div>
+  <div class="section-title">Four phases from today through departure</div>
+  <div class="section-desc">This is the shape of the plan — the path sections below have the specific to-dos and study material for each track.</div>
 
-  <h2 class="section-title">Check In — Today &amp; This Week</h2>
-  <div class="section-note">Daily items reset every day automatically. Weekly items reset every Monday.</div>
-  <div class="two-col">
-    <div class="checklist-box">
-      <h3>DAILY</h3>
-      <div class="sub" id="daily-date"></div>
-      <div id="daily-list"></div>
+  <div class="phase">
+    <div class="phase-top"><h3>Phase 1 — Foundation</h3><span class="phase-range">Now → Sep 2026</span></div>
+    <p>IELTS/TOEFL prep + test, shortlist universities and consortia, start portfolio case study #1, begin SOPs, line up recommenders, register for GATE 2027 and CEED 2027.</p>
+  </div>
+  <div class="phase">
+    <div class="phase-top"><h3>Phase 2 — Applications Wave 1</h3><span class="phase-range">Sep 2026 → Jan 2027</span></div>
+    <p>Submit GKS Embassy Track application. Submit Erasmus Mundus applications. Finish portfolio case study #2. Finalize recommendation letters. Sit CEED (17 Jan 2027).</p>
+  </div>
+  <div class="phase">
+    <div class="phase-top"><h3>Phase 3 — Exams &amp; Admissions</h3><span class="phase-range">Feb 2027 → Jun 2027</span></div>
+    <p>Sit GATE 2027. GKS interview prep (if shortlisted). Finish portfolio case study #3. Apply to Saarland / Duisburg-Essen. Keep CGPA steady. Track GKS + GATE + Erasmus results.</p>
+  </div>
+  <div class="phase">
+    <div class="phase-top"><h3>Phase 4 — Graduation &amp; Transition</h3><span class="phase-range">Jul 2027 →</span></div>
+    <p>Graduate. Confirm which offer to take. Prepare visa documents, blocked account / financials, and travel logistics. First-semester Werkstudent search once landed.</p>
+  </div>
+
+  <!-- PATH ACCORDIONS -->
+  <div class="section-eyebrow">Paths</div>
+  <div class="section-title">Every option currently on the table</div>
+  <div class="section-desc">Click a track to expand its facts, to-do list, study material, and official links.</div>
+
+  <div class="paths">
+
+    <!-- GERMANY DIRECT -->
+    <details class="path" open>
+      <summary>
+        <div class="path-title">
+          <span class="path-badge">01 · 2027 START</span>
+          <div><h3>Direct German University Application</h3><div class="p-sub">Self-funded — fastest realistic 2027 start · Saarland &amp; Duisburg-Essen</div></div>
+        </div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="path-body">
+        <div class="path-facts">
+          <div class="fact"><span class="k">Tuition</span><span class="v">~€150–350/semester</span></div>
+          <div class="fact"><span class="k">Real cost</span><span class="v">Living, ~€992/mo benchmark</span></div>
+          <div class="fact"><span class="k">Target unis</span><span class="v">Saarland (HCI, IELTS 7.0), Duisburg-Essen (HCI/CS)</span></div>
+          <div class="fact"><span class="k">Deadlines</span><span class="v">~Feb – Jul 2027</span></div>
+        </div>
+        <div class="path-note">Bridge the gap via an education loan for your blocked account (~€11,904/yr) plus part-time work once enrolled. No scholarship needed to unlock this path — the tuition is already near-zero.</div>
+
+        <div class="section-label">Study material</div>
+        <ul class="study-list">
+          <li><b>IELTS Academic</b> — all four modules; weight your prep toward Writing Task 2 and Speaking, since those pull scores down most often</li>
+          <li><b>HCI/UX fundamentals</b> — usability heuristics, interaction design principles, and user research methods, since your SOP and any interview will draw on these</li>
+          <li><b>Portfolio case-study structure</b> — practice narrating a project as problem → research → iteration → outcome</li>
+          <li><b>German A1 basics</b> — not required for English-taught HCI programmes, but useful for daily life and mini-jobs from day one</li>
+        </ul>
+        <div class="linkset">
+          <a href="https://ielts.org" target="_blank" rel="noopener">IELTS official prep ↗</a>
+          <a href="https://www.interaction-design.org/" target="_blank" rel="noopener">Interaction Design Foundation ↗</a>
+          <a href="https://www.goethe.de/en/spr/kur.html" target="_blank" rel="noopener">Goethe-Institut — German A1 ↗</a>
+        </div>
+
+        <div class="section-label">To-do list</div>
+        <ul class="checklist" data-path="germany">
+          <li><input type="checkbox" id="de-1"><label for="de-1">Shortlist final programmes at Saarland (HCI) and Duisburg-Essen (HCI/CS)</label></li>
+          <li><input type="checkbox" id="de-2"><label for="de-2">Take IELTS/TOEFL — target 7.0+ / 100+ (by Aug–Sep 2026)</label></li>
+          <li><input type="checkbox" id="de-3"><label for="de-3">Prepare transcripts, SOP, and letters of recommendation</label></li>
+          <li><input type="checkbox" id="de-4"><label for="de-4">Submit applications ahead of Feb–Jul 2027 deadlines</label></li>
+          <li><input type="checkbox" id="de-5"><label for="de-5">Research education loan options for blocked-account funding (~€11,904/yr)</label></li>
+          <li><input type="checkbox" id="de-6"><label for="de-6">Open blocked account (Fintiba / Expatrio) once admitted</label></li>
+          <li><input type="checkbox" id="de-7"><label for="de-7">Apply for the student visa</label></li>
+          <li><input type="checkbox" id="de-8"><label for="de-8">After enrolling: apply for Deutschlandstipendium (€300/mo top-up)</label></li>
+          <li><input type="checkbox" id="de-9"><label for="de-9">In final phase: check STIBET completion support eligibility</label></li>
+        </ul>
+        <div class="section-label">Official links</div>
+        <div class="linkset">
+          <a href="https://www.uni-saarland.de/en/study/programmes/master.html" target="_blank" rel="noopener">Saarland — Master's programmes ↗</a>
+          <a href="https://hci.cs.uni-saarland.de/" target="_blank" rel="noopener">Saarland HCI Lab ↗</a>
+          <a href="https://www.uni-due.de/en/studying/master.php" target="_blank" rel="noopener">Duisburg-Essen — Master's programmes ↗</a>
+          <a href="https://www.deutschlandstipendium.de/deutschlandstipendium/de/services/english/the-deutschlandstipendium-best-of-both-worlds-for-students.html" target="_blank" rel="noopener">Deutschlandstipendium ↗</a>
+          <a href="https://www.daad.de/en/" target="_blank" rel="noopener">DAAD — financing &amp; blocked account info ↗</a>
+        </div>
+
+        <div class="werk-box">
+          <div class="section-label" style="margin-top:0;">Budget — Germany: cost vs. earnings</div>
+          <p style="font-size:13px;color:var(--text-dim);">The numbers behind whether a Werkstudent role actually makes Duisburg-Essen or Saarland comfortable.</p>
+
+          <h3 style="font-size:14px;margin:16px 0 10px;">Monthly cost of living, by city tier</h3>
+          <div class="table-scroll">
+          <table>
+            <tr><th>Category</th><th>Affordable (Duisburg-Essen, Saarland-tier)</th><th>Moderate (Saarbrücken)</th><th>Expensive (Munich, Frankfurt)</th></tr>
+            <tr><td>Rent (shared flat/dorm)</td><td>€250–400</td><td>€350–500</td><td>€600–800</td></tr>
+            <tr><td>Food</td><td>€150–250</td><td>€150–250</td><td>€200–300</td></tr>
+            <tr><td>Health insurance (under 30)</td><td>€120–135</td><td>€120–135</td><td>€120–135</td></tr>
+            <tr><td>Transport</td><td colspan="3">Often covered by semester ticket</td></tr>
+            <tr><td>Phone / internet / misc</td><td>€50–100</td><td>€50–100</td><td>€80–150</td></tr>
+            <tr><td>Total realistic monthly cost</td><td>€700–900</td><td>€850–1,050</td><td>€1,200–1,600</td></tr>
+          </table>
+          </div>
+          <div class="callout">The official minimum benchmark — what the blocked account releases — is <b>€992/month</b>. That's Germany's own bare-minimum survival number, not a comfortable figure.</div>
+
+          <h3 style="font-size:14px;margin:20px 0 10px;">Realistic part-time earnings</h3>
+          <div class="table-scroll">
+          <table>
+            <tr><th>Work type</th><th>Hours</th><th>Term-time / month</th><th>Semester break / month</th></tr>
+            <tr><td>Mini-job (retail, café, campus)</td><td>Capped at €603/mo</td><td>~€400–603</td><td>Same cap applies</td></tr>
+            <tr><td>Werkstudent (UX/design/tech)</td><td>Up to 20 hrs/wk</td><td>€1,120–1,600</td><td>€2,000–3,000+ (full-time weeks)</td></tr>
+            <tr><td>HiWi (research/teaching assistant)</td><td>Flexible, no 140-day cap</td><td>~€400–800</td><td>Similar, flexible</td></tr>
+          </table>
+          </div>
+          <div class="verdicts">
+            <div class="verdict good"><b>Duisburg-Essen / Saarland + Werkstudent</b><span>Genuinely comfortable — room to save and build career-relevant experience.</span></div>
+            <div class="verdict ok"><b>Duisburg-Essen / Saarland + mini-job</b><span>Tight but workable, roughly break-even with the blocked account.</span></div>
+            <div class="verdict bad"><b>Munich/Frankfurt-tier + same income</b><span>Meaningfully tighter — not the smart choice for your financial position.</span></div>
+          </div>
+          <div class="callout">Honest caveat: this math only holds once you land a Werkstudent role — usually a few months of searching, a German-style CV, and at least conversational German for non-tech-adjacent roles. Your first semester or two, budget for mini-job-level income while you search.</div>
+        </div>
+
+        <div class="werk-box">
+          <h3 style="font-size:14px;">Werkstudent job search — first-semester project</h3>
+          <p style="font-size:13px;color:var(--text-dim);">SAP has run active Werkstudent UX Design roles listing Human-Computer Interaction as a preferred academic background — a direct match to your profile. This isn't something to lock in pre-departure; it activates once you're enrolled.</p>
+          <div class="werk-grid">
+            <div class="werk-stat"><div class="num">23,000+</div><div class="lbl">active Werkstudent/internship listings, ~6,000 companies (mid-2026)</div></div>
+            <div class="werk-stat"><div class="num">~€16.50/hr</div><div class="lbl">average disclosed pay across listings</div></div>
+          </div>
+          <p style="font-size:13px;margin-bottom:4px;color:var(--text);"><b>What gets you hired:</b></p>
+          <ul class="plain">
+            <li>A German-style CV/Lebenslauf — compact, photo often included, reverse-chronological (different structure from an Indian resume)</li>
+            <li>A short, targeted cover letter per role</li>
+            <li>A genuine UX case study you can walk through in an interview — this is where your portfolio work pays off twice</li>
+          </ul>
+          <div class="section-label">Job search links</div>
+          <div class="linkset">
+            <a href="https://www.workingstudentjobs.de/" target="_blank" rel="noopener">workingstudentjobs.de ↗</a>
+            <a href="https://www.stellenwerk.de/" target="_blank" rel="noopener">stellenwerk.de ↗</a>
+            <a href="https://www.linkedin.com/jobs/working-student-jobs-germany" target="_blank" rel="noopener">LinkedIn — Werkstudent listings ↗</a>
+          </div>
+          <div class="section-label">First-semester job search checklist</div>
+          <ul class="checklist" data-path="werkstudent">
+            <li><input type="checkbox" id="wk-1"><label for="wk-1">Draft German-style CV/Lebenslauf</label></li>
+            <li><input type="checkbox" id="wk-2"><label for="wk-2">Set up alerts on workingstudentjobs.de and stellenwerk.de</label></li>
+            <li><input type="checkbox" id="wk-3"><label for="wk-3">Shortlist target companies (SAP and similar UX/design-hiring firms)</label></li>
+            <li><input type="checkbox" id="wk-4"><label for="wk-4">Prepare one polished UX case study for interviews</label></li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- ERASMUS MUNDUS -->
+    <details class="path">
+      <summary>
+        <div class="path-title">
+          <span class="path-badge">02 · 2027 STRETCH</span>
+          <div><h3>Erasmus Mundus Joint Master</h3><div class="p-sub">Fully-funded EU scholarship — competitive stretch shot for 2027</div></div>
+        </div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="path-body">
+        <div class="path-facts">
+          <div class="fact"><span class="k">Full scholarship</span><span class="v">Tuition + €1,400/mo (max 24 mo)</span></div>
+          <div class="fact"><span class="k">Structure</span><span class="v">Study in 2+ EU countries</span></div>
+          <div class="fact"><span class="k">Application window</span><span class="v">~Oct 2026 – Jan 2027</span></div>
+          <div class="fact"><span class="k">Start</span><span class="v">2027 intake (programme-dependent)</span></div>
+        </div>
+        <div class="path-note">Search the EMJM catalogue for HCI/UX-adjacent joint masters — fields and consortia change yearly, so re-check before committing.</div>
+
+        <div class="section-label">Study material</div>
+        <ul class="study-list">
+          <li><b>IELTS/TOEFL</b> — same target as the German path; most consortia set 6.5–7.0 as their floor</li>
+          <li><b>Programme-specific prerequisites</b> — some consortia expect statistics or programming background; check each programme's admission page individually before applying</li>
+          <li><b>Motivation letter writing</b> — EMJM committees weight this heavily; tailor one per consortium rather than reusing a single draft</li>
+        </ul>
+        <div class="linkset">
+          <a href="https://www.interaction-design.org/" target="_blank" rel="noopener">Interaction Design Foundation ↗</a>
+        </div>
+
+        <div class="section-label">To-do list</div>
+        <ul class="checklist" data-path="erasmus">
+          <li><input type="checkbox" id="em-1"><label for="em-1">Search the EMJM catalogue for HCI / UX / interaction-design-relevant programmes</label></li>
+          <li><input type="checkbox" id="em-2"><label for="em-2">Shortlist 2–3 consortia that fit your profile</label></li>
+          <li><input type="checkbox" id="em-3"><label for="em-3">Build a Europass-format CV</label></li>
+          <li><input type="checkbox" id="em-4"><label for="em-4">Draft a tailored statement of purpose per programme</label></li>
+          <li><input type="checkbox" id="em-5"><label for="em-5">Submit applications within the Oct 2026–Jan 2027 window</label></li>
+          <li><input type="checkbox" id="em-6"><label for="em-6">Apply for the EACEA scholarship alongside the programme application</label></li>
+        </ul>
+        <div class="section-label">Official links</div>
+        <div class="linkset">
+          <a href="https://erasmus-plus.ec.europa.eu/opportunities/individuals/students/erasmus-mundus-joint-masters" target="_blank" rel="noopener">Erasmus Mundus — official overview ↗</a>
+          <a href="https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus-catalogue_en" target="_blank" rel="noopener">EMJM course catalogue ↗</a>
+          <a href="https://www.eacea.ec.europa.eu/scholarships_en" target="_blank" rel="noopener">EACEA scholarships portal ↗</a>
+        </div>
+      </div>
+    </details>
+
+    <!-- GKS/KGSP -->
+    <details class="path">
+      <summary>
+        <div class="path-title">
+          <span class="path-badge">03 · 2028 START</span>
+          <div><h3>GKS / KGSP — South Korea</h3><div class="p-sub">Primary fully-funded track · tuition, stipend, airfare, 1-yr Korean course</div></div>
+        </div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="path-body">
+        <div class="path-facts">
+          <div class="fact"><span class="k">Coverage</span><span class="v">Full tuition + stipend + airfare</span></div>
+          <div class="fact"><span class="k">Your CGPA</span><span class="v">80.6% — clears the min. threshold</span></div>
+          <div class="fact"><span class="k">India seats</span><span class="v">~54 (Embassy + University Track)</span></div>
+          <div class="fact"><span class="k">Realistic odds</span><span class="v">~15–25% if well-executed</span></div>
+        </div>
+        <div class="path-note">Target unis: KAIST (Culture Technology), Yonsei, SKKU, Korea University, Hanyang University. Timeline: apply Sept 2026 → results ~May/Jun 2027 → language course ~Sept 2027 → Master's actually starts ~2028.</div>
+
+        <div class="section-label">Study material</div>
+        <ul class="study-list">
+          <li><b>Study Plan / Research Proposal writing</b> — the single most weighted document in the application; explain why HCI, why Korea, why this university, specifically</li>
+          <li><b>Personal Statement</b> — narrate your CSE-to-UX transition with concrete evidence, not general interest</li>
+          <li><b>Interview prep</b> — Embassy Track sometimes includes a short interview; rehearse answers about your academic plan and long-term goals</li>
+          <li><b>Hangul basics (optional edge)</b> — not required at application stage since GKS includes a mandatory 1-year Korean course, but early familiarity helps you settle faster</li>
+        </ul>
+        <div class="linkset">
+          <a href="https://www.topik.go.kr/" target="_blank" rel="noopener">TOPIK — official Korean test ↗</a>
+          <a href="https://talktomeinkorean.com/" target="_blank" rel="noopener">Talk To Me In Korean (basics) ↗</a>
+        </div>
+
+        <div class="section-label">To-do list</div>
+        <ul class="checklist" data-path="gks">
+          <li><input type="checkbox" id="gk-1"><label for="gk-1">Confirm eligibility docs — CGPA record, expected-graduation certificate</label></li>
+          <li><input type="checkbox" id="gk-2"><label for="gk-2">Decide: Embassy Track vs University Track</label></li>
+          <li><input type="checkbox" id="gk-3"><label for="gk-3">Shortlist target universities (KAIST CT, Yonsei, SKKU, Korea Univ, Hanyang)</label></li>
+          <li><input type="checkbox" id="gk-4"><label for="gk-4">Draft Study Plan and Personal Statement</label></li>
+          <li><input type="checkbox" id="gk-5"><label for="gk-5">Line up two academic/professional recommendation letters</label></li>
+          <li><input type="checkbox" id="gk-6"><label for="gk-6">Submit application when Embassy Track opens (~Sep 2026)</label></li>
+          <li><input type="checkbox" id="gk-7"><label for="gk-7">Track results (~May–Jun 2027)</label></li>
+          <li><input type="checkbox" id="gk-8"><label for="gk-8">Prepare for the mandatory 1-year Korean language course (~Sep 2027)</label></li>
+        </ul>
+        <div class="section-label">Official links</div>
+        <div class="linkset">
+          <a href="https://www.studyinkorea.go.kr" target="_blank" rel="noopener">Study in Korea — official GKS portal ↗</a>
+        </div>
+      </div>
+    </details>
+
+    <!-- GATE 2027 -->
+    <details class="path">
+      <summary>
+        <div class="path-title">
+          <span class="path-badge">04 · SAFETY NET</span>
+          <div><h3>GATE 2027</h3><div class="p-sub">Domestic M.Tech (HCI-adjacent research) + PSU job security</div></div>
+        </div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="path-body">
+        <div class="path-facts">
+          <div class="fact"><span class="k">Exam</span><span class="v">Feb 2027 · 3 hrs · 65 Qs · 100 marks</span></div>
+          <div class="fact"><span class="k">Paper</span><span class="v">CS (Computer Science &amp; IT)</span></div>
+          <div class="fact"><span class="k">Eligibility</span><span class="v">3rd-year UG or higher — you qualify</span></div>
+          <div class="fact"><span class="k">Registration</span><span class="v">~Aug – Sep 2026</span></div>
+        </div>
+        <div class="path-note">Not branded "HCI," but several IITs (Bombay, Delhi, Kanpur, Guwahati) have CSE faculty doing HCI/interaction-design-adjacent research. GATE also opens PSU recruitment — a genuine fallback income path most other options don't offer.</div>
+
+        <div class="section-label">Study material — GATE CS syllabus</div>
+        <ul class="study-list">
+          <li><b>Engineering Mathematics</b> — discrete math, linear algebra, calculus, probability &amp; statistics</li>
+          <li><b>Digital Logic</b> — boolean algebra, combinational &amp; sequential circuits</li>
+          <li><b>Computer Organization &amp; Architecture</b></li>
+          <li><b>Programming &amp; Data Structures</b> — C, arrays, trees, graphs, hashing</li>
+          <li><b>Algorithms</b> — sorting, searching, greedy, DP, graph algorithms, complexity analysis</li>
+          <li><b>Theory of Computation</b> — automata, formal languages, computability</li>
+          <li><b>Compiler Design</b></li>
+          <li><b>Operating Systems</b> — processes, memory management, file systems</li>
+          <li><b>Databases</b> — ER models, normalization, SQL, transactions</li>
+          <li><b>Computer Networks</b> — OSI/TCP-IP layers, routing, protocols</li>
+          <li><b>General Aptitude</b> — verbal &amp; numerical reasoning (common to every GATE paper)</li>
+        </ul>
+        <p style="font-size:12.5px;color:var(--text-dim);margin-top:8px;">Standard reference texts: CLRS (Algorithms), Galvin (Operating Systems), Korth (Databases), Kurose &amp; Ross (Networks) — supplement with previous 10 years' GATE CS papers.</p>
+        <div class="linkset">
+          <a href="https://gateoverflow.in/" target="_blank" rel="noopener">GATE Overflow ↗</a>
+          <a href="https://nptel.ac.in/" target="_blank" rel="noopener">NPTEL — free video courses ↗</a>
+        </div>
+
+        <div class="section-label">To-do list</div>
+        <ul class="checklist" data-path="gate">
+          <li><input type="checkbox" id="ga-1"><label for="ga-1">Register for GATE 2027, CS paper (~Aug–Sep 2026)</label></li>
+          <li><input type="checkbox" id="ga-2"><label for="ga-2">Build a structured prep schedule, Now → Jan 2027</label></li>
+          <li><input type="checkbox" id="ga-3"><label for="ga-3">Identify HCI-adjacent CSE faculty at IIT Bombay / Delhi / Kanpur / Guwahati</label></li>
+          <li><input type="checkbox" id="ga-4"><label for="ga-4">Sit the exam (Feb 2027)</label></li>
+          <li><input type="checkbox" id="ga-5"><label for="ga-5">Check results (~Mar 2027)</label></li>
+          <li><input type="checkbox" id="ga-6"><label for="ga-6">If pursuing M.Tech: register for COAP counselling (~May–Jul 2027)</label></li>
+          <li><input type="checkbox" id="ga-7"><label for="ga-7">Track PSU application windows as scores get published</label></li>
+        </ul>
+        <div class="section-label">Official links</div>
+        <div class="linkset">
+          <a href="https://gate.iitm.ac.in/" target="_blank" rel="noopener">GATE — conducting-IIT portal ↗</a>
+        </div>
+        <p style="font-size:11px;color:var(--text-dimmer);margin-top:8px;">Conducting institute rotates yearly — confirm gate2027.iitX.ac.in once notified.</p>
+      </div>
+    </details>
+
+    <!-- IIT M.Des / CEED -->
+    <details class="path">
+      <summary>
+        <div class="path-title">
+          <span class="path-badge">05 · LOWER PRIORITY</span>
+          <div><h3>IIT M.Des via CEED</h3><div class="p-sub">Domestic design backup — drawing-test-driven, lower fit for your profile</div></div>
+        </div>
+        <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </summary>
+      <div class="path-body">
+        <div class="path-facts">
+          <div class="fact"><span class="k">Exam</span><span class="v">CEED 2027 — 17 Jan 2027</span></div>
+          <div class="fact"><span class="k">Registration</span><span class="v">~Oct 2026</span></div>
+          <div class="fact"><span class="k">Target programmes</span><span class="v">IIT Bombay IDC, IIT Hyderabad — Interaction Design</span></div>
+          <div class="fact"><span class="k">Gate</span><span class="v">Drawing / visual-reasoning heavy</span></div>
+        </div>
+        <div class="path-note">Same drawing/visual-reasoning gate as NID, but slightly better odds than NID alone. Worth a parallel application, not the main bet, given your academic-strength profile fits abroad options better.</div>
+
+        <div class="section-label">Study material — CEED structure</div>
+        <ul class="study-list">
+          <li><b>Part A (computer-based, 1 hr)</b> — visualization &amp; spatial ability, observation &amp; design sensitivity, environmental &amp; social awareness, analytical &amp; logical reasoning</li>
+          <li><b>Part B (pen-and-paper, 2 hrs)</b> — drawing, creativity, communication through sketches, design problem-solving</li>
+          <li><b>Daily sketching practice</b> — objects, perspective, and quick concept sketches build the speed Part B rewards</li>
+          <li><b>Design awareness</b> — stay current on product/UX design trends and everyday design problems; several questions probe general design sensitivity</li>
+        </ul>
+        <div class="linkset">
+          <a href="https://www.ceed.iitb.ac.in/" target="_blank" rel="noopener">CEED previous year papers ↗</a>
+        </div>
+
+        <div class="section-label">To-do list</div>
+        <ul class="checklist" data-path="ceed">
+          <li><input type="checkbox" id="cd-1"><label for="cd-1">Register for CEED 2027 (~Oct 2026)</label></li>
+          <li><input type="checkbox" id="cd-2"><label for="cd-2">Practice Part B — sketching, spatial reasoning, visual perception</label></li>
+          <li><input type="checkbox" id="cd-3"><label for="cd-3">Shortlist: IIT Bombay IDC (Interaction Design), IIT Hyderabad (Interaction Design)</label></li>
+          <li><input type="checkbox" id="cd-4"><label for="cd-4">Sit the exam (17 Jan 2027)</label></li>
+          <li><input type="checkbox" id="cd-5"><label for="cd-5">On results, apply directly to shortlisted institutes</label></li>
+        </ul>
+        <div class="section-label">Official links</div>
+        <div class="linkset">
+          <a href="https://www.ceed.iitb.ac.in/" target="_blank" rel="noopener">CEED — official exam site ↗</a>
+          <a href="https://acad.iitb.ac.in/admissions/masters/mdes" target="_blank" rel="noopener">IIT Bombay IDC — M.Des admissions ↗</a>
+          <a href="https://design.iitd.ac.in/programs-m-des.html" target="_blank" rel="noopener">IIT Delhi — M.Des programme ↗</a>
+        </div>
+      </div>
+    </details>
+
+  </div>
+
+  <!-- SUPPORTING WORKSTREAMS -->
+  <div class="section-eyebrow">Workstreams</div>
+  <div class="section-title">Cross-cutting, apply across every path</div>
+  <div class="budget-card">
+    <div class="section-label">Portfolio (3 projects)</div>
+    <ul class="checklist" data-path="portfolio">
+      <li><input type="checkbox" id="pf-1"><label for="pf-1">AI-native productivity tool — proves your CSE edge</label></li>
+      <li><input type="checkbox" id="pf-2"><label for="pf-2">Accessibility-focused service redesign — proves research + empathy</label></li>
+      <li><input type="checkbox" id="pf-3"><label for="pf-3">Physical/tactile smart product — proves craft, covers CEED/NID interview needs</label></li>
+    </ul>
+    <div class="section-label">Testing &amp; language</div>
+    <ul class="checklist" data-path="testing">
+      <li><input type="checkbox" id="ts-1"><label for="ts-1">Book IELTS/TOEFL slot (target by Aug–Sep 2026)</label></li>
+      <li><input type="checkbox" id="ts-2"><label for="ts-2">6–8 weeks focused prep on writing + speaking</label></li>
+      <li><input type="checkbox" id="ts-3"><label for="ts-3">Sit the test, target 7.0+ IELTS / 100+ TOEFL</label></li>
+    </ul>
+    <div class="section-label">Testing links</div>
+    <div class="linkset">
+      <a href="https://ielts.org" target="_blank" rel="noopener">IELTS — official site ↗</a>
+      <a href="https://www.ets.org/toefl.html" target="_blank" rel="noopener">TOEFL — official site ↗</a>
     </div>
-    <div class="checklist-box">
-      <h3>THIS WEEK</h3>
-      <div class="sub" id="weekly-range"></div>
-      <div id="weekly-list"></div>
+  </div>
+
+  <!-- DAILY / WEEKLY -->
+  <div class="section-eyebrow">Check-in</div>
+  <div class="section-title">Daily / weekly</div>
+  <div class="section-desc">Recurring habits that keep every path moving in parallel. Uncheck at the start of a new day or week.</div>
+  <div class="dw-grid">
+    <div class="dw-card">
+      <h3>Daily</h3>
+      <div class="sub">~1–2 focused hours</div>
+      <ul class="checklist" data-path="daily">
+        <li><input type="checkbox" id="dd-1"><label for="dd-1">One portfolio work block</label></li>
+        <li><input type="checkbox" id="dd-2"><label for="dd-2">One GATE / IELTS prep block</label></li>
+        <li><input type="checkbox" id="dd-3"><label for="dd-3">Scan one target university/scholarship page for updates</label></li>
+      </ul>
+    </div>
+    <div class="dw-card">
+      <h3>Weekly</h3>
+      <div class="sub">15–30 min review</div>
+      <ul class="checklist" data-path="weekly">
+        <li><input type="checkbox" id="wk1-1"><label for="wk1-1">Review upcoming deadlines across all five paths</label></li>
+        <li><input type="checkbox" id="wk1-2"><label for="wk1-2">Update this tracker with anything checked off</label></li>
+        <li><input type="checkbox" id="wk1-3"><label for="wk1-3">One outreach/networking action (alumni, faculty, Werkstudent contact)</label></li>
+      </ul>
     </div>
   </div>
 
-  <h2 class="section-title">Milestones</h2>
-  <div class="section-note">One-time to-dos. These stay checked once done — track the big picture here.</div>
-  <div class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-    <div class="progress-text" id="progress-text">0 / 0</div>
-  </div>
-  <div id="milestones"></div>
-
-  <div class="footnote">Built from your study-abroad planning conversation · Graduation target: July–August 2027 · Tracks: DAAD STEM Scholarship (Germany) &amp; GKS/KGSP (South Korea)</div>
+  <div class="reset-row"><button class="reset-btn" id="resetBtn">Reset all checkboxes</button></div>
+  <footer>Data saved automatically and privately to this artifact.</footer>
 </div>
 
 <script>
 (function(){
-  const GRAD_DATE = new Date('2027-08-01T00:00:00');
+  const STORAGE_KEY = 'masters-tracker-checklist-v2';
+  const boxes = Array.from(document.querySelectorAll('.checklist input[type=checkbox]'));
 
-  const keyDates = [
-    {date:'2026-08-15', label:'Take IELTS/TOEFL (target 7.0+ / 100+)', tag:'all'},
-    {date:'2026-08-31', label:'Finalize uni shortlist: Saarland, Duisburg-Essen (DE) + KAIST, Yonsei, SKKU (KR)', tag:'all'},
-    {date:'2026-09-15', label:'Portfolio case study #1 complete', tag:'all'},
-    {date:'2026-09-20', label:'GKS Embassy Track application window opens (tentative)', tag:'kr'},
-    {date:'2026-10-15', label:'DAAD STEM Scholarship application opens (tentative)', tag:'de'},
-    {date:'2026-11-30', label:'Portfolio case study #2 complete', tag:'all'},
-    {date:'2027-01-15', label:'GKS embassy interview window, if shortlisted (tentative)', tag:'kr'},
-    {date:'2027-02-15', label:'Portfolio case study #3 complete', tag:'all'},
-    {date:'2027-03-15', label:'GKS first-round results (tentative)', tag:'kr'},
-    {date:'2027-05-15', label:'Saarland University application deadline (tentative)', tag:'de'},
-    {date:'2027-06-01', label:'GKS final NIIED results (tentative)', tag:'kr'},
-    {date:'2027-07-15', label:'Duisburg-Essen application deadline (tentative)', tag:'de'},
-    {date:'2027-08-01', label:'Graduation (CSE)', tag:'all'},
-    {date:'2027-09-01', label:'Korea: Korean language program begins, if selected', tag:'kr'},
-    {date:'2027-10-01', label:'Germany: Winter term 27/28 begins, if selected', tag:'de'},
-  ];
-
-  const roadmap = [
-    {name:'Phase 1 — Foundation', range:'Now → Sep 2026', desc:'IELTS/TOEFL prep + test, shortlist universities, start portfolio case study #1, begin SOP drafts, line up recommenders.'},
-    {name:'Phase 2 — Applications Wave 1', range:'Sep 2026 → Dec 2026', desc:'Submit GKS Embassy Track application. Submit DAAD STEM Scholarship application. Finish portfolio case study #2. Finalize recommendation letters.'},
-    {name:'Phase 3 — Interviews &amp; Admissions', range:'Jan 2027 → Jun 2027', desc:'GKS interview prep (if shortlisted). Finish portfolio case study #3. Apply to Saarland / Duisburg-Essen. Keep CGPA at 8.0+. Track GKS + DAAD results.'},
-    {name:'Phase 4 — Graduation &amp; Transition', range:'Jul 2027 →', desc:'Graduate. Confirm which offer to take. Prepare visa documents, blocked account / financials, and travel logistics.'},
-  ];
-
-  const dailyHabits = [
-    {id:'d1', label:'English practice — 30–45 min (until IELTS is done)'},
-    {id:'d2', label:'Portfolio / design work — 1 hr'},
-    {id:'d3', label:'SOP / Study Plan writing — 20–30 min (seasonal, during application windows)'},
-    {id:'d4', label:'Coursework — protect CGPA, don\'t let it slide'},
-  ];
-
-  const weeklyTasks = [
-    {id:'w1', label:'Review progress against the roadmap below'},
-    {id:'w2', label:'Check GKS (studyinkorea.go.kr) + DAAD portals for updates'},
-    {id:'w3', label:'One full IELTS mock section (rotate: writing/speaking/reading/listening)'},
-    {id:'w4', label:'Follow up on recommendation letters / portfolio feedback, if relevant this week'},
-  ];
-
-  const milestoneGroups = [
-    {title:'Phase 1 — Foundation', items:[
-      {id:'m1', label:'Book and take IELTS/TOEFL'},
-      {id:'m2', label:'Shortlist + research Saarland and Duisburg-Essen program pages'},
-      {id:'m3', label:'Shortlist + research KAIST, Yonsei, SKKU HCI-adjacent departments'},
-      {id:'m4', label:'Pick 3 portfolio project ideas (at least one with working code/prototype)'},
-      {id:'m5', label:'Identify 2 professors for recommendation letters and ask early'},
-    ]},
-    {title:'Phase 2 — Applications Wave 1', items:[
-      {id:'m6', label:'Complete portfolio case study #1'},
-      {id:'m7', label:'Draft GKS Study Plan (Korea-specific narrative, 2000–3000 words)'},
-      {id:'m8', label:'Draft DAAD motivation letter (STEM-development narrative)'},
-      {id:'m9', label:'Collect + notarize/translate transcripts and certificates'},
-      {id:'m10', label:'Submit GKS Embassy Track application'},
-      {id:'m11', label:'Submit DAAD STEM Scholarship application'},
-      {id:'m12', label:'Complete portfolio case study #2'},
-    ]},
-    {title:'Phase 3 — Interviews & Admissions', items:[
-      {id:'m13', label:'Prep + attend GKS interview, if shortlisted'},
-      {id:'m14', label:'Complete portfolio case study #3'},
-      {id:'m15', label:'Submit Saarland University application'},
-      {id:'m16', label:'Submit Duisburg-Essen application'},
-      {id:'m17', label:'Receive + review GKS first-round result'},
-      {id:'m18', label:'Receive + review DAAD decision'},
-    ]},
-    {title:'Phase 4 — Graduation & Transition', items:[
-      {id:'m19', label:'Graduate — final degree certificate in hand'},
-      {id:'m20', label:'Confirm final choice between offers'},
-      {id:'m21', label:'Sort visa paperwork (blocked account / embassy documents)'},
-      {id:'m22', label:'Book travel + departure logistics'},
-    ]},
-  ];
-
-  // ---------- helpers ----------
-  function pad(n){return String(n).padStart(2,'0');}
-  function todayKey(){
-    const d = new Date();
-    return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
-  }
-  function isoWeekKey(){
-    const d = new Date();
-    const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    const day = (t.getUTCDay()+6)%7;
-    t.setUTCDate(t.getUTCDate()-day+3);
-    const firstThu = new Date(Date.UTC(t.getUTCFullYear(),0,4));
-    const week = 1+Math.round(((t-firstThu)/86400000-3+((firstThu.getUTCDay()+6)%7))/7);
-    return t.getUTCFullYear()+'-W'+pad(week);
-  }
-  function weekRangeLabel(){
-    const d = new Date();
-    const day = (d.getDay()+6)%7;
-    const mon = new Date(d); mon.setDate(d.getDate()-day);
-    const sun = new Date(mon); sun.setDate(mon.getDate()+6);
-    const fmt = x => x.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    return fmt(mon)+' – '+fmt(sun);
-  }
-  function daysBetween(a,b){return Math.ceil((a-b)/86400000);}
-  function fmtDate(s){
-    const d = new Date(s+'T00:00:00');
-    return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  function updateProgress(){
+    const total = boxes.length;
+    const done = boxes.filter(b=>b.checked).length;
+    const pct = total ? Math.round((done/total)*100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = done + ' / ' + total + ' tasks complete across all tracks (' + pct + '%)';
   }
 
-  // ---------- render static content ----------
-  function renderBoard(){
-    const now = new Date();
-    const daysToGrad = daysBetween(GRAD_DATE, now);
-    const upcoming = keyDates.filter(k => new Date(k.date+'T00:00:00') >= now).sort((a,b)=> new Date(a.date)-new Date(b.date))[0];
-    const daysToNext = upcoming ? daysBetween(new Date(upcoming.date+'T00:00:00'), now) : null;
-
-    const board = document.getElementById('board');
-    board.innerHTML = `
-      <div class="flip">
-        <div class="flip-label">Days to graduation</div>
-        <div class="flip-value">${daysToGrad}<small>days</small></div>
-      </div>
-      <div class="flip">
-        <div class="flip-label">Next deadline</div>
-        <div class="flip-value">${daysToNext !== null ? daysToNext : '—'}<small>days</small></div>
-      </div>
-      <div class="flip">
-        <div class="flip-label">${upcoming ? upcoming.label.slice(0,34)+(upcoming.label.length>34?'…':'') : 'All caught up'}</div>
-        <div class="flip-value" style="font-size:16px;color:var(--text);margin-top:10px;">${upcoming ? fmtDate(upcoming.date) : ''}</div>
-      </div>
-    `;
+  function updateLiStates(){
+    boxes.forEach(b=>{
+      const li = b.closest('li');
+      if(li) li.classList.toggle('done', b.checked);
+    });
   }
 
-  function renderRoadmap(){
-    document.getElementById('roadmap').innerHTML = roadmap.map(p => `
-      <div class="phase">
-        <div class="phase-head">
-          <div class="phase-name">${p.name}</div>
-          <div class="phase-range">${p.range}</div>
-        </div>
-        <div class="phase-desc">${p.desc}</div>
-      </div>
-    `).join('');
-  }
-
-  function renderDates(){
-    const tagClass = {de:'tag-de', kr:'tag-kr', all:'tag-all'};
-    const tagText = {de:'Germany', kr:'Korea', all:'Both'};
-    document.getElementById('dates').innerHTML = keyDates.map(k => `
-      <tr>
-        <td class="dt-date">${fmtDate(k.date)}</td>
-        <td>${k.label}<span class="tag ${tagClass[k.tag]}">${tagText[k.tag]}</span></td>
-      </tr>
-    `).join('');
-  }
-
-  // ---------- persisted checklists ----------
-  function loadJSON(key){
+  async function loadState(){
     try{
-      const val = localStorage.getItem(key);
-      return val ? JSON.parse(val) : {};
-    }catch(e){ return {}; }
-  }
-  function saveJSON(key, obj){
-    try{ localStorage.setItem(key, JSON.stringify(obj)); }
-    catch(e){ console.error('storage save failed', e); }
-  }
-
-  function renderDaily(){
-    const key = 'daily:'+todayKey();
-    document.getElementById('daily-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long', month:'short', day:'numeric'});
-    const state = loadJSON(key);
-    const list = document.getElementById('daily-list');
-    list.innerHTML = dailyHabits.map(h => `
-      <div class="item ${state[h.id]?'done':''}">
-        <input type="checkbox" id="${h.id}" ${state[h.id]?'checked':''}>
-        <label for="${h.id}">${h.label}</label>
-      </div>
-    `).join('');
-    dailyHabits.forEach(h=>{
-      document.getElementById(h.id).addEventListener('change', (e)=>{
-        state[h.id] = e.target.checked;
-        e.target.closest('.item').classList.toggle('done', e.target.checked);
-        saveJSON(key, state);
-      });
-    });
-  }
-
-  function renderWeekly(){
-    const key = 'weekly:'+isoWeekKey();
-    document.getElementById('weekly-range').textContent = weekRangeLabel();
-    const state = loadJSON(key);
-    const list = document.getElementById('weekly-list');
-    list.innerHTML = weeklyTasks.map(t => `
-      <div class="item ${state[t.id]?'done':''}">
-        <input type="checkbox" id="${t.id}" ${state[t.id]?'checked':''}>
-        <label for="${t.id}">${t.label}</label>
-      </div>
-    `).join('');
-    weeklyTasks.forEach(t=>{
-      document.getElementById(t.id).addEventListener('change', (e)=>{
-        state[t.id] = e.target.checked;
-        e.target.closest('.item').classList.toggle('done', e.target.checked);
-        saveJSON(key, state);
-      });
-    });
-  }
-
-  function renderMilestones(){
-    const state = loadJSON('milestones');
-    const wrap = document.getElementById('milestones');
-    wrap.innerHTML = milestoneGroups.map(g => `
-      <div class="m-group">
-        <div class="m-group-title">${g.title}</div>
-        ${g.items.map(it => `
-          <div class="item ${state[it.id]?'done':''}">
-            <input type="checkbox" id="${it.id}" ${state[it.id]?'checked':''}>
-            <label for="${it.id}">${it.label}</label>
-          </div>
-        `).join('')}
-      </div>
-    `).join('');
-
-    const allItems = milestoneGroups.flatMap(g=>g.items);
-    function updateProgress(){
-      const done = allItems.filter(it => state[it.id]).length;
-      const pct = Math.round((done/allItems.length)*100);
-      document.getElementById('progress-fill').style.width = pct+'%';
-      document.getElementById('progress-text').textContent = done+' / '+allItems.length;
+      const result = await window.storage.get(STORAGE_KEY, false);
+      if(result && result.value){
+        const state = JSON.parse(result.value);
+        boxes.forEach(b=>{ if(state[b.id]) b.checked = true; });
+      }
+    }catch(e){
+      // no saved state yet
     }
+    updateLiStates();
     updateProgress();
-
-    allItems.forEach(it=>{
-      document.getElementById(it.id).addEventListener('change', (e)=>{
-        state[it.id] = e.target.checked;
-        e.target.closest('.item').classList.toggle('done', e.target.checked);
-        updateProgress();
-        saveJSON('milestones', state);
-      });
-    });
   }
 
-  renderBoard();
-  renderRoadmap();
-  renderDates();
-  renderDaily();
-  renderWeekly();
-  renderMilestones();
+  async function saveState(){
+    const state = {};
+    boxes.forEach(b=>{ state[b.id] = b.checked; });
+    try{
+      await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+    }catch(e){
+      console.error('Could not save tracker state', e);
+    }
+  }
+
+  boxes.forEach(b=>{
+    b.addEventListener('change', ()=>{
+      updateLiStates();
+      updateProgress();
+      saveState();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', async ()=>{
+    boxes.forEach(b=> b.checked = false);
+    updateLiStates();
+    updateProgress();
+    await saveState();
+  });
+
+  function daysBetween(target){
+    const now = new Date();
+    const diffMs = target - now;
+    return Math.max(0, Math.ceil(diffMs / (1000*60*60*24)));
+  }
+  function fmtDate(d){
+    return d.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+  }
+
+  // graduation countdown
+  const gradDate = new Date('2027-08-01T00:00:00');
+  document.getElementById('gradDays').innerHTML = daysBetween(gradDate) + '<span>days</span>';
+
+  // IELTS target
+  const ieltsDate = new Date('2026-08-31T00:00:00');
+  document.getElementById('ieltsDays').innerHTML = daysBetween(ieltsDate) + '<span>days</span>';
+  document.getElementById('ieltsDate').textContent = fmtDate(ieltsDate);
+
+  // next deadline across all paths
+  const milestones = [
+    {date:new Date('2026-08-01T00:00:00'), label:'GATE 2027 registration opens'},
+    {date:new Date('2026-09-01T00:00:00'), label:'GKS Embassy Track opens'},
+    {date:new Date('2026-09-30T00:00:00'), label:'GATE 2027 registration closes'},
+    {date:new Date('2026-10-01T00:00:00'), label:'CEED 2027 registration opens'},
+    {date:new Date('2026-10-01T00:00:00'), label:'Erasmus Mundus window opens'},
+    {date:new Date('2027-01-15T00:00:00'), label:'Erasmus Mundus window closes'},
+    {date:new Date('2027-01-17T00:00:00'), label:'CEED 2027 exam'},
+    {date:new Date('2027-02-01T00:00:00'), label:'GATE 2027 exam'},
+    {date:new Date('2027-02-01T00:00:00'), label:'German university deadlines open'},
+    {date:new Date('2027-05-01T00:00:00'), label:'GKS results expected'},
+    {date:new Date('2027-07-01T00:00:00'), label:'German university deadlines close'},
+  ];
+  const now = new Date();
+  const upcoming = milestones.filter(m=>m.date > now).sort((a,b)=>a.date-b.date)[0];
+  if(upcoming){
+    document.getElementById('nextDeadlineDays').innerHTML = daysBetween(upcoming.date) + '<span>days</span>';
+    document.getElementById('nextDeadlineLabel').textContent = upcoming.label;
+  }
+
+  loadState();
 })();
 </script>
+</body>
+</html>
